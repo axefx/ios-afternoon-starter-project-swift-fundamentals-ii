@@ -16,7 +16,29 @@ import UIKit
 //: e. Use a `String?` for the Terminal, since it may not be set yet (i.e.: waiting to arrive on time)
 //:
 //: f. Use a class to represent a `DepartureBoard` with a list of departure flights, and the current airport
-
+enum FlightStatus {
+    case enroute
+    case scheduled
+    case canceled
+    case delayed
+}
+struct Airport {
+    let name: String
+}
+struct Flight {
+    let airport: Airport
+    let departure: Date
+    let terminal: Int
+    let flight_status: FlightStatus
+}
+class DepartureBoard {
+    var flights: [Flight]
+    var airport: Airport
+    init(airport: Airport){
+        self.airport = airport
+        self.flights = []
+    }
+}
 
 
 //: ## 2. Create 3 flights and add them to a departure board
@@ -29,9 +51,14 @@ import UIKit
 //: d. Make one of the flights have a `nil` terminal because it has not been decided yet.
 //:
 //: e. Stretch: Look at the API for [`DateComponents`](https://developer.apple.com/documentation/foundation/datecomponents?language=objc) for creating a specific time
-
-
-
+var flight1 = Flight(airport: Airport(name: "JFK"),departure: Date(), terminal: 8, flight_status: .enroute)
+var flight2 = Flight(airport: Airport(name: "JFK"),departure: Date(), terminal: 7, flight_status: .canceled)
+var flight3 = Flight(airport: Airport(name: "JFK"),departure: Date(), terminal: 6, flight_status: .canceled)
+let board = DepartureBoard(airport: Airport(name:"JFK"))
+board.flights.append(flight1)
+board.flights.append(flight2)
+board.flights.append(flight3)
+print(board.flights)
 //: ## 3. Create a free-standing function that can print the flight information from the `DepartureBoard`
 //: a. Use the function signature: `printDepartures(departureBoard:)`
 //:
@@ -40,10 +67,14 @@ import UIKit
 //: c. Make your `FlightStatus` enum conform to `String` so you can print the `rawValue` String values from the `enum`. See the [enum documentation](https://docs.swift.org/swift-book/LanguageGuide/Enumerations.html).
 //:
 //: d. Print out the current DepartureBoard you created using the function
+func printDepartures(departureBoard: DepartureBoard){
+    let flights = departureBoard.flights
+    for i in flights {
+        print(i.flight_status)
+    }
+}
 
-
-
-
+printDepartures(departureBoard: board)
 //: ## 4. Make a second function to print print an empty string if the `departureTime` is nil
 //: a. Createa new `printDepartures2(departureBoard:)` or modify the previous function
 //:
